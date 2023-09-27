@@ -13,7 +13,6 @@ use App\Modules\User\Services\AuthService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class AuthController extends Controller {
@@ -39,7 +38,7 @@ class AuthController extends Controller {
             return (new ErrorResponse(message: $e->getMessage(), status: $e->getCode()))->toJson();
         }
          catch (Exception $e) {
-            return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR))->toJson();
+            return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, exception: $e))->toJson();
         }
 
     }
@@ -52,7 +51,7 @@ class AuthController extends Controller {
             return (new DataResponse(message: 'logged out successfully'))->toJson();
 
         } catch (\Exception $e) {
-            return (new ErrorResponse(message: 'Server Error', status: $e->getCode()))->toJson();
+            return (new ErrorResponse(message: 'Server Error', status: $e->getCode(), exception: $e))->toJson();
         }
     }
 
@@ -70,7 +69,7 @@ class AuthController extends Controller {
             return (new DataResponse(message: 'User registered successfully'))->toJson();
 
         } catch (Exception $e) {
-            return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR))->toJson();
+            return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, exception: $e))->toJson();
         }
 
     }
