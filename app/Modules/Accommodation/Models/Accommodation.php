@@ -28,6 +28,11 @@ class Accommodation extends Model
         'user_id',
     ];
 
+    final public function isAvailable():bool
+    {
+        return (bool) $this->available_rooms;
+    }
+
     final public function location(): BelongsTo
     {
         return $this->belongsTo(Location::class);

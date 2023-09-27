@@ -2,6 +2,7 @@
 
 
 use App\Modules\Accommodation\Controllers\AccommodationsController;
+use App\Modules\Accommodation\Controllers\BookingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->prefix('v1')->group(callback: function () {
-        Route::resource('/accommodations', AccommodationsController::class);
+Route::prefix('v1')->group(callback: function ()
+{
+
+    Route::middleware('auth:sanctum')->group(callback: function () {
+        Route::resource('accommodations', AccommodationsController::class);
+    });
+
+    Route::post('accommodations/{accommodationId}/bookings', [BookingController::class, 'bookAccommodation']);
 });
+
+

@@ -100,7 +100,10 @@ class AccommodationsController extends Controller {
 
             return (new DataResponse(message: "Accommodation update successfully"))->toJson();
 
-        } catch (Exception $e) {
+        } catch (NotFoundResourceException $e) {
+            return (new ErrorResponse(message: $e->getMessage(), status: $e->getCode()))->toJson();
+        }
+        catch (Exception $e) {
             return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, exception: $e))->toJson();
         }
     }
@@ -112,14 +115,17 @@ class AccommodationsController extends Controller {
      */
     final public function destroy(string $id): JsonResponse
     {
-//        try {
+        try {
             $this->accommodationsService->deleteAccommodation($id);
 
             return (new DataResponse(message: "Accommodation deleted successfully"))->toJson();
 
-//        } catch (Exception $e) {
-//            return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, exception: $e))->toJson();
-//        }
+        } catch (NotFoundResourceException $e) {
+            return (new ErrorResponse(message: $e->getMessage(), status: $e->getCode()))->toJson();
+        }
+        catch (Exception $e) {
+            return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, exception: $e))->toJson();
+        }
     }
 
 }
