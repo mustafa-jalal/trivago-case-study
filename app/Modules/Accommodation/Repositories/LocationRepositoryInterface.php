@@ -26,4 +26,11 @@ interface LocationRepositoryInterface
      * @param array $data
      */
     public function update(string $id, array $data);
+
+    /**
+     * remove location data from store.
+     *
+     * @param string $id
+     */
+    public function remove(string $id);
 }

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreignUuid('user_id');
             $table->timestamps();
 
-            $table->foreign('location_id')->references('id')->on('locations');
+            $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');;
         });
     }
 

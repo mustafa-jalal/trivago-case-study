@@ -8,7 +8,7 @@ use Exception;
 
 class LocationRepository implements LocationRepositoryInterface
 {
-    public function __construct(Location $location, private readonly Country $country)
+    public function __construct(private readonly Location $location, private readonly Country $country)
     {
     }
 
@@ -40,7 +40,7 @@ class LocationRepository implements LocationRepositoryInterface
     {
         $country = $this->getCountryByName($data['country']);
 
-         Location::find($id)->update([
+        $this->location::find($id)->update([
             'country_id' => $country->id,
             'city' => $data['city'],
             'state' => $data['state'],
@@ -49,4 +49,8 @@ class LocationRepository implements LocationRepositoryInterface
         ]);
     }
 
+    public function remove(string $id): void
+    {
+        $this->location->find($id)->delete();
+    }
 }

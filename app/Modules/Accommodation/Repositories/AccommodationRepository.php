@@ -34,4 +34,9 @@ class AccommodationRepository implements AccommodationRepositoryInterface
     {
         $this->accommodation->find($id)->update($data);
     }
+
+    final public function remove(string $id): void
+    {
+        $this->accommodation->find($id)->delete();
+    }
 }

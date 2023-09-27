@@ -122,4 +122,32 @@ class AccommodationsService
             throw $exception;
         }
     }
+
+    /**
+     * @param string $id
+     * @return void
+     * @throws Exception
+     */
+    final public function deleteAccommodation(string $id): void
+    {
+        try {
+            $accommodation = $this->accommodationRepository->getById($id);
+
+            if (!$accommodation) {
+                throw new NotFoundResourceException("Accommodation not found", ResponseAlias::HTTP_NOT_FOUND);
+            }
+
+            DB::beginTransaction();
+
+            $this->accommodationRepository->remove($id);
+
+            $this->locationRepository->remove($accommodation->location->id);
+
+            DB::commit();
+
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
+    }
 }

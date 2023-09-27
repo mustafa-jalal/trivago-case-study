@@ -35,4 +35,11 @@ interface AccommodationRepositoryInterface
      * @param array $data
      */
     public function update(string $id, array $data);
+
+    /**
+     * remove accommodation data from store.
+     *
+     * @param string $id
+     */
+    public function remove(string $id);
 }

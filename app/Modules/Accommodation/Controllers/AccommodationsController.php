@@ -105,4 +105,21 @@ class AccommodationsController extends Controller {
         }
     }
 
+    /**
+     * Register any application services.
+     * @param string $id
+     * @return JsonResponse
+     */
+    final public function destroy(string $id): JsonResponse
+    {
+//        try {
+            $this->accommodationsService->deleteAccommodation($id);
+
+            return (new DataResponse(message: "Accommodation deleted successfully"))->toJson();
+
+//        } catch (Exception $e) {
+//            return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, exception: $e))->toJson();
+//        }
+    }
+
 }
