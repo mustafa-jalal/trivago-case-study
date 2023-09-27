@@ -11,4 +11,11 @@ interface AccommodationRepositoryInterface
      * @param array $data
      */
     public function save(array $data);
+
+    /**
+     * save user data in store.
+     *
+     * @param string $id
+     */
+    public function getById(string $id);
 }

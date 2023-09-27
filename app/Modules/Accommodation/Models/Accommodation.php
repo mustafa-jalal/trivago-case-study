@@ -4,6 +4,7 @@ namespace App\Modules\Accommodation\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Accommodation extends Model
@@ -27,8 +28,8 @@ class Accommodation extends Model
         'user_id',
     ];
 
-    final public function location(): HasOne
+    final public function location(): BelongsTo
     {
-        return $this->hasOne(Location::class);
+        return $this->belongsTo(Location::class);
     }
 }

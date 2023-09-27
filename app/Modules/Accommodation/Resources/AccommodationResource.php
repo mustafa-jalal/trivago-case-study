@@ -12,10 +12,9 @@ class AccommodationResource extends JsonResource
             'name' => $this->name,
             'rating' => $this->rating,
             'category' => $this->category,
-            'location' => $this->location,
+            'location' => new LocationResource($this->location),
             'image' => $this->image,
             'reputation' => $this->reputation,
-            'reputationBadge' => $this->name,
             'price' => $this->price,
             'availability' => $this->available_rooms,
         ];

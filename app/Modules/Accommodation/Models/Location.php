@@ -24,13 +24,13 @@ class Location extends Model
         'address',
     ];
 
-    final public function location(): BelongsTo
+    final public function location(): HasOne
     {
-        return $this->belongsTo(Accommodation::class);
+        return $this->hasOne(Accommodation::class);
     }
 
-    final public function country(): HasOne
+    final public function country(): BelongsTo
     {
-        return $this->hasOne(Country::class);
+        return $this->belongsTo(Country::class);
     }
 }

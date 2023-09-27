@@ -8,7 +8,11 @@ use App\Modules\Accommodation\Mappers\LocationMapper;
 use App\Modules\Accommodation\Models\Accommodation;
 use App\Modules\Accommodation\Repositories\AccommodationRepositoryInterface;
 use App\Modules\Accommodation\Repositories\LocationRepositoryInterface;
+use Exception;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class AccommodationsService
 {
@@ -26,7 +30,7 @@ class AccommodationsService
     /**
      * @param StoreAccommodationDto $dto
      * @return Accommodation
-     * @throws \Exception
+     * @throws Exception
      */
     final public function createAccommodation(StoreAccommodationDto $dto): Accommodation
     {
@@ -47,7 +51,29 @@ class AccommodationsService
 
             return  $accommodation;
 
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
+    }
+
+    /**
+     * @param string $id
+     * @return Accommodation
+     * @throws Exception
+     */
+    final public function getAccommodation(string $id): Accommodation
+    {
+        try {
+            $accommodation = $this->accommodationRepository->getById($id);
+
+            if (!$accommodation) {
+                throw new NotFoundResourceException("Accommodation not found", ResponseAlias::HTTP_NOT_FOUND);
+            }
+
+            return  $accommodation;
+
+        } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;
         }
