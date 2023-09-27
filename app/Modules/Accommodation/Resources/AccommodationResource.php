@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class AccommodationResource extends JsonResource
 {
+
     final public function toArray($request = null): array
     {
         return [

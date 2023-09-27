@@ -2,20 +2,26 @@
 
 namespace App\Modules\Accommodation\Repositories;
 
-use App\Modules\Accommodation\Models\Accommodation;
-
 interface AccommodationRepositoryInterface
 {
+
     /**
-     * save user data in store.
+     * get all user accommodations data in store.
      *
-     * @param string $id
+     * @param string $userId
      */
-    public function getById(string $id);
+    public function getAll(string $userId);
+
+    /**
+     * get accommodation data from store.
+     *
+     * @param string $userId
+     */
+    public function getById(string $userId);
 
 
     /**
-     * save user data in store.
+     *  save accommodation data in store.
      *
      * @param array $data
      */

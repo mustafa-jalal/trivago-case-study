@@ -22,6 +22,28 @@ class AccommodationsController extends Controller {
 
     /**
      * Register any application services.
+     * @param Request $request
+     * @return JsonResponse
+     */
+    final public function index(Request $request): JsonResponse
+    {
+        try {
+            $accommodations = $this->accommodationsService->getAllAccommodations();
+
+            $accommodationResource = AccommodationResource::collection($accommodations);
+
+            return (new DataResponse($accommodationResource->toArray($request)))->toJson();
+
+        } catch (NotFoundResourceException $e) {
+            return (new ErrorResponse(message: $e->getMessage(), status: $e->getCode()))->toJson();
+        }
+        catch (Exception $e) {
+            return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, exception: $e))->toJson();
+        }
+    }
+
+    /**
+     * Register any application services.
      * @param StoreAccommodationRequest $request
      * @return JsonResponse
      */
