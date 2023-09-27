@@ -24,6 +24,7 @@ class Accommodation extends Model
         'reputation',
         'price',
         'available_rooms',
+        'user_id',
     ];
 
     final public function location(): HasOne

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('reputation');
             $table->double('price', 10, 2);
             $table->integer('available_rooms');
+            $table->foreignUuid('user_id');
             $table->timestamps();
 
             $table->foreign('location_id')->references('id')->on('locations');
