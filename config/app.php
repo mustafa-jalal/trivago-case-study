@@ -171,7 +171,9 @@ return [
         /*
         * Modules Service Providers...
         */
+        App\Modules\Core\ModuleServiceProvider::class,
         App\Modules\User\ModuleServiceProvider::class,
+        App\Modules\Accommodation\ModuleServiceProvider::class,
     ])->toArray(),
 
     /*
