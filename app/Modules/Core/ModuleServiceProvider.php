@@ -20,16 +20,10 @@ class ModuleServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerMigrations();
-        $this->registerRoutes();
     }
 
     private function registerMigrations(): void
     {
         $this->loadMigrationsFrom(__DIR__.'/../Core/Database/Migrations');
-    }
-
-    private function registerRoutes(): void
-    {
-        $this->loadRoutesFrom(__DIR__.'/../Core/Routes/v1.php');
     }
 }
