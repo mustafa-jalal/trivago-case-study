@@ -4,7 +4,9 @@ namespace App\Modules\Accommodation\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Accommodation\Dto\StoreAccommodationDto;
+use App\Modules\Accommodation\Dto\UpdateAccommodationDto;
 use App\Modules\Accommodation\Requests\StoreAccommodationRequest;
+use App\Modules\Accommodation\Requests\UpdateAccommodationRequest;
 use App\Modules\Accommodation\Resources\AccommodationResource;
 use App\Modules\Accommodation\Services\AccommodationsService;
 use App\Modules\Core\Responses\DataResponse;
@@ -57,6 +59,26 @@ class AccommodationsController extends Controller {
             return (new ErrorResponse(message: $e->getMessage(), status: $e->getCode()))->toJson();
         }
         catch (Exception $e) {
+            return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, exception: $e))->toJson();
+        }
+    }
+
+    /**
+     * Register any application services.
+     * @param UpdateAccommodationRequest $request
+     * @param string $id
+     * @return JsonResponse
+     */
+    final public function update(UpdateAccommodationRequest $request, string $id): JsonResponse
+    {
+        try {
+            $dto = new UpdateAccommodationDto($request->validated());
+
+             $this->accommodationsService->updateAccommodation($id, $dto);
+
+            return (new DataResponse(message: "Accommodation update successfully"))->toJson();
+
+        } catch (Exception $e) {
             return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, exception: $e))->toJson();
         }
     }

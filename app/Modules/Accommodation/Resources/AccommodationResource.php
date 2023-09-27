@@ -10,6 +10,7 @@ class AccommodationResource extends JsonResource
     final public function toArray($request = null): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'rating' => $this->rating,
             'category' => $this->category,

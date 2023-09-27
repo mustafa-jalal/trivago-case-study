@@ -13,9 +13,17 @@ interface LocationRepositoryInterface
     public function getCountryByName(string $name);
 
     /**
-     * save user data in store.
+     * save location data in store.
      *
      * @param array $data
      */
     public function save(array $data);
+
+    /**
+     * update location data in store.
+     *
+     * @param string $id
+     * @param array $data
+     */
+    public function update(string $id, array $data);
 }

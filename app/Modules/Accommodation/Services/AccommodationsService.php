@@ -3,6 +3,7 @@
 namespace App\Modules\Accommodation\Services;
 
 use App\Modules\Accommodation\Dto\StoreAccommodationDto;
+use App\Modules\Accommodation\Dto\UpdateAccommodationDto;
 use App\Modules\Accommodation\Mappers\AccommodationMapper;
 use App\Modules\Accommodation\Mappers\LocationMapper;
 use App\Modules\Accommodation\Models\Accommodation;
@@ -37,11 +38,7 @@ class AccommodationsService
         try {
             DB::beginTransaction();
 
-            $country = $this->locationRepository->getCountryByName($dto->getLocation()['country']);
-
-            $locationData = LocationMapper::toDB($dto->getLocation(), $country);
-
-            $location = $this->locationRepository->save($locationData);
+            $location = $this->locationRepository->save($dto->getLocation());
 
             $accommodationData = AccommodationMapper::toDB($dto->toArray(), $location);
 
@@ -72,6 +69,35 @@ class AccommodationsService
             }
 
             return  $accommodation;
+
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
+    }
+
+    /**
+     * @param string $id
+     * @param UpdateAccommodationDto $dto
+     * @return void
+     * @throws Exception
+     */
+    final public function updateAccommodation(string $id, UpdateAccommodationDto $dto): void
+    {
+        try {
+            $accommodation = $this->accommodationRepository->getById($id);
+
+            if (!$accommodation) {
+                throw new NotFoundResourceException("Accommodation not found", ResponseAlias::HTTP_NOT_FOUND);
+            }
+
+            DB::beginTransaction();
+
+            $this->locationRepository->update($accommodation->location->id, $dto->getLocation());
+
+            $this->accommodationRepository->update($id, $dto->toArray());
+
+            DB::commit();
 
         } catch (Exception $exception) {
             DB::rollBack();

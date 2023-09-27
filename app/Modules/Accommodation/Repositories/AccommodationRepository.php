@@ -15,8 +15,13 @@ class AccommodationRepository implements AccommodationRepositoryInterface
         return Accommodation::create($data);
     }
 
-    public function getById(string $id): ?Accommodation
+    final public function getById(string $id): ?Accommodation
     {
         return $this->accommodation->find($id);
+    }
+
+    final public function update(string $id, array $data): void
+    {
+        $this->accommodation->find($id)->update($data);
     }
 }
