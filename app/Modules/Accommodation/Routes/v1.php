@@ -23,6 +23,8 @@ Route::prefix('v1')->group(callback: function ()
         Route::resource('accommodations', AccommodationsController::class);
     });
 
+    Route::get('users/{userId}/accommodations', [AccommodationsController::class, 'getUserAccommodations']);
+
     Route::post('accommodations/{accommodationId}/bookings', [BookingController::class, 'bookAccommodation']);
 });
 

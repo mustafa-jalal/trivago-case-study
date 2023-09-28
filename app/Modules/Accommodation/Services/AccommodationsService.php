@@ -35,15 +35,9 @@ class AccommodationsService
      */
     final public function getAllAccommodations(): Collection
     {
-        try {
-            $authUser = (new GetAuthUserService())->execute();
+        $authUser = (new GetAuthUserService())->execute();
 
-            return $this->accommodationRepository->getAll($authUser->id);
-
-        } catch (Exception $exception) {
-            DB::rollBack();
-            throw $exception;
-        }
+        return $this->accommodationRepository->getAll($authUser->id);
     }
 
     /**
@@ -79,19 +73,13 @@ class AccommodationsService
      */
     final public function getAccommodation(string $id): Accommodation
     {
-        try {
-            $accommodation = $this->accommodationRepository->getById($id);
+        $accommodation = $this->accommodationRepository->getById($id);
 
-            if (!$accommodation) {
-                throw new NotFoundResourceException("Accommodation not found", ResponseAlias::HTTP_NOT_FOUND);
-            }
-
-            return  $accommodation;
-
-        } catch (Exception $exception) {
-            DB::rollBack();
-            throw $exception;
+        if (!$accommodation) {
+            throw new NotFoundResourceException("Accommodation not found", ResponseAlias::HTTP_NOT_FOUND);
         }
+
+        return  $accommodation;
     }
 
     /**
@@ -149,5 +137,14 @@ class AccommodationsService
             DB::rollBack();
             throw $exception;
         }
+    }
+
+    /**
+     * @param string $userId
+     * @return Collection
+     */
+    final public function getUserAccommodations(string $userId): Collection
+    {
+        return $this->accommodationRepository->getAll($userId);
     }
 }

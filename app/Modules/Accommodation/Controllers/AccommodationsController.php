@@ -128,4 +128,27 @@ class AccommodationsController extends Controller {
         }
     }
 
+    /**
+     * Register any application services.
+     * @param Request $request
+     * @param string $userId
+     * @return JsonResponse
+     */
+    final public function getUserAccommodations(Request $request, string $userId): JsonResponse
+    {
+        try {
+            $accommodations = $this->accommodationsService->getUserAccommodations($userId);
+
+            $accommodationResource = AccommodationResource::collection($accommodations);
+
+            return (new DataResponse($accommodationResource->toArray($request)))->toJson();
+
+        } catch (NotFoundResourceException $e) {
+            return (new ErrorResponse(message: $e->getMessage(), status: $e->getCode()))->toJson();
+        }
+        catch (Exception $e) {
+            return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, exception: $e))->toJson();
+        }
+    }
+
 }
