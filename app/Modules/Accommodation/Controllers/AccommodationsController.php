@@ -12,9 +12,11 @@ use App\Modules\Accommodation\Services\AccommodationsService;
 use App\Modules\Core\Responses\DataResponse;
 use App\Modules\Core\Responses\ErrorResponse;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class AccommodationsController extends Controller {
@@ -56,7 +58,7 @@ class AccommodationsController extends Controller {
 
             $accommodationResource = new AccommodationResource($accommodation);
 
-            return (new DataResponse($accommodationResource->toArray()))->toJson();
+            return (new DataResponse($accommodationResource->toArray(), status: ResponseAlias::HTTP_CREATED))->toJson();
 
         } catch (Exception $e) {
             return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, exception: $e))->toJson();
@@ -100,10 +102,11 @@ class AccommodationsController extends Controller {
 
             return (new DataResponse(message: "Accommodation update successfully"))->toJson();
 
-        } catch (NotFoundResourceException $e) {
+        } catch (AuthorizationException $e) {
+            return (new ErrorResponse(message: $e->getMessage(), status: ResponseAlias::HTTP_UNAUTHORIZED))->toJson();
+        } catch (AccessDeniedHttpException $e) {
             return (new ErrorResponse(message: $e->getMessage(), status: $e->getCode()))->toJson();
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, exception: $e))->toJson();
         }
     }
@@ -120,10 +123,11 @@ class AccommodationsController extends Controller {
 
             return (new DataResponse(message: "Accommodation deleted successfully"))->toJson();
 
-        } catch (NotFoundResourceException $e) {
+        } catch (AuthorizationException $e) {
+            return (new ErrorResponse(message: $e->getMessage(), status: ResponseAlias::HTTP_UNAUTHORIZED))->toJson();
+        } catch (AccessDeniedHttpException $e) {
             return (new ErrorResponse(message: $e->getMessage(), status: $e->getCode()))->toJson();
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, exception: $e))->toJson();
         }
     }

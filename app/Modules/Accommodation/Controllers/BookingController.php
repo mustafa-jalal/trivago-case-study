@@ -10,6 +10,7 @@ use App\Modules\Core\Responses\ErrorResponse;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class BookingController extends Controller {
     public function __construct(private readonly BookingsService $bookingsService){}
@@ -27,7 +28,7 @@ class BookingController extends Controller {
 
             return (new DataResponse(message: "Accommodation booked successfully"))->toJson();
 
-        } catch (AccommodationNotAvailableException $e) {
+        } catch (AccommodationNotAvailableException|NotFoundResourceException $e) {
             return (new ErrorResponse(message: $e->getMessage(), status: $e->getCode()))->toJson();
         } catch (Exception $e) {
             return (new ErrorResponse(message: 'Server Error', status: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, exception: $e))->toJson();

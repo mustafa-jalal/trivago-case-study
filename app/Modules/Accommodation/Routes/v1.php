@@ -19,13 +19,20 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(callback: function ()
 {
 
-    Route::middleware('auth:sanctum')->group(callback: function () {
-        Route::resource('accommodations', AccommodationsController::class);
+    Route::prefix('accommodations')->group(function ()
+    {
+        Route::middleware('auth:sanctum')->group(callback: function () {
+            Route::post('/', [AccommodationsController::class, 'store']);
+            Route::put('/{id}', [AccommodationsController::class, 'update']);
+            Route::delete('/{id}', [AccommodationsController::class, 'destroy']);
+        });
+
+        Route::get('/', [AccommodationsController::class, 'index']);
+        Route::get('/{id}', [AccommodationsController::class, 'show']);
+        Route::post('/{accommodationId}/bookings', [BookingController::class, 'bookAccommodation']);
     });
 
     Route::get('users/{userId}/accommodations', [AccommodationsController::class, 'getUserAccommodations']);
-
-    Route::post('accommodations/{accommodationId}/bookings', [BookingController::class, 'bookAccommodation']);
 });
 
 
