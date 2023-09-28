@@ -2,6 +2,7 @@
 
 
 use App\Modules\User\Controllers\Auth\AuthController;
+use App\Modules\User\Controllers\UsersController;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
@@ -18,11 +19,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(callback: function (Router $router) {
     $router->prefix('/auth')->group(function () {
-        // TODO; ->name() not used for all routes
         Route::post('/register', [AuthController::class, 'register'])->name('user.register');
         Route::post('/login', [AuthController::class, 'login'])->name('user.login');
         Route::group(['middleware' => ['auth:sanctum']], function () {
             Route::post('/logout', [AuthController::class, 'logout']);
         });
     });
+
+    $router->get('/users', [UsersController::class, 'index']);
 });

@@ -10,6 +10,11 @@ class UserRepository implements UserRepositoryInterface
     {
     }
 
+    public function getAll()
+    {
+        return $this->user->all();
+    }
+
     final public function getByEmail(string $email): ?User
     {
         return $this->user->where('email', $email)->first();

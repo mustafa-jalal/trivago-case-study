@@ -6,7 +6,13 @@ interface UserRepositoryInterface
 {
 
     /**
-     * Get the user from db by email.
+     * Get all users from data store.
+     *
+     */
+    public function getAll();
+
+    /**
+     * Get the user from data store by email.
      *
      * @param string $email
      */
