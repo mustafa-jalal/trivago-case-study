@@ -8,16 +8,22 @@ interface AccommodationRepositoryInterface
     /**
      * get all user accommodations data in store.
      *
-     * @param string $userId
      */
-    public function getAll(string $userId);
+    public function getAll();
 
     /**
-     * get accommodation data from store.
+     * get single accommodation data from store.
+     *
+     * @param string $id
+     */
+    public function getById(string $id);
+
+    /**
+     * get accommodations data from store by user id.
      *
      * @param string $userId
      */
-    public function getById(string $userId);
+    public function getByUserId(string $userId);
 
 
     /**

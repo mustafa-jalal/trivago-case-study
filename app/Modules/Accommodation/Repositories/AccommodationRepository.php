@@ -15,7 +15,12 @@ class AccommodationRepository implements AccommodationRepositoryInterface
     {
     }
 
-    public function getAll(string $userId): Collection
+    public function getAll(): Collection
+    {
+        return $this->accommodation->filter($this->accommodationsFilters)->get();
+    }
+
+    public function getByUserId(string $userId): Collection
     {
         return $this->accommodation->filter($this->accommodationsFilters)->where('user_id', $userId)->get();
     }

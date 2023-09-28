@@ -36,9 +36,7 @@ class AccommodationsService
      */
     final public function getAllAccommodations(): Collection
     {
-        $authUser = (new GetAuthUserService())->execute();
-
-        return $this->accommodationRepository->getAll($authUser->id);
+        return $this->accommodationRepository->getAll();
     }
 
     /**
@@ -150,6 +148,6 @@ class AccommodationsService
      */
     final public function getUserAccommodations(string $userId): Collection
     {
-        return $this->accommodationRepository->getAll($userId);
+        return $this->accommodationRepository->getByUserId($userId);
     }
 }
