@@ -1,0 +1,910 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Trivago Independent Hotels APIs Documentation",
+    "description": " __Welcome to Trivago Independent Hotels API reference. This API serves as the primary gateway to facilitate accommodations display and bookings through trivago platform__\n# Introduction\n__The Independat Hotels API is organized according to [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) principles and provides the following functionalities:__\n* create, retrieve, update and delete accommodations with different categories\n* user management for hoteliers\n* simple booking experience\n> __note:__ you can create, update and delete only when you are authenticated user.\n",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/mustafa-jalal/accommodations-api/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
+      "url": "https://localhost:8000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Auth apis & users list (accessible without authentication)"
+    },
+    {
+      "name": "Accommodations",
+      "description": "All accommodations operations endpoints"
+    }
+  ],
+  "paths": {
+    "/v1/auth/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Authenticate user",
+        "description": "Authenticate a user and generate an access token.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/auth_login_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/v1/auth/register": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Register a new user",
+        "description": "Register a new user account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/auth_register_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/v1/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "List users",
+        "description": "Get All users in system",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}/accommodations": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a list of accommodations for a user",
+        "description": "Retrieve a list of accommodations for a specific user without authentication.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user whose accommodations are to be retrieved",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_2"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/accommodations": {
+      "get": {
+        "tags": [
+          "Accommodations"
+        ],
+        "summary": "List all accommodations for authenticated user",
+        "description": "Retrieve a list of accommodations for an authenticated user.",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Filter by name",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rating",
+            "in": "query",
+            "description": "Filter by rating",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "Filter by city",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reputationBadge",
+            "in": "query",
+            "description": "Filter by reputationBadge",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of accommodations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_3"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Accommodations"
+        ],
+        "summary": "Create a new accommodation for authenticated user",
+        "description": "Create a new accommodation for the authenticated user.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v1_accommodations_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Accommodation created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_201"
+                },
+                "example": {
+                  "data": {
+                    "id": "9a3d355a-3348-4408-b767-25b1f6a36bbb",
+                    "name": "a new hotel name",
+                    "rating": 2,
+                    "category": "guest-house",
+                    "location": {
+                      "country": "Germany",
+                      "city": "Berlin",
+                      "state": "new state",
+                      "zip_code": 12345,
+                      "address": "Boulevard Díaz Ordaz No. 9 Bavaria"
+                    },
+                    "image": "http://a-valid-path-to-image/image.jpg",
+                    "reputation": 500,
+                    "reputationBadge": "RED",
+                    "price": 323,
+                    "availability": 10
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_422"
+                },
+                "example": {
+                  "errors": {
+                    "name": [
+                      "The name field must be at least 11 characters."
+                    ],
+                    "category": [
+                      "Category must be one of (hotel, alternative, hostel, lodge, resort, guest-house)."
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/accommodations/{id}": {
+      "get": {
+        "tags": [
+          "Accommodations"
+        ],
+        "summary": "Get a single accommodation by ID",
+        "description": "Retrieve a single accommodation by its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the accommodation to retrieve",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Accommodation retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_201"
+                },
+                "example": {
+                  "data": {
+                    "id": "9a3d321d-ef18-4a52-a7b5-96ec21485481",
+                    "name": "nile luzor 2",
+                    "rating": 5,
+                    "category": "guest-house",
+                    "location": {
+                      "country": "Germany",
+                      "city": "Berlin",
+                      "state": "Morelos",
+                      "zip_code": 12345,
+                      "address": "Boulevard Díaz Ordaz No. 9 Cantarranas"
+                    },
+                    "image": "http://dsfdsf/dfds.jpg",
+                    "reputation": 630,
+                    "reputationBadge": "YELLOW",
+                    "price": 323,
+                    "availability": 2
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Accommodation not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Accommodations"
+        ],
+        "summary": "Update an accommodation for authenticated user",
+        "description": "Update an accommodation for the authenticated user.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the accommodation to update",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/accommodations_id_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Accommodation update successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_4"
+                },
+                "example": {
+                  "message": "Accommodation update successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Accommodation not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_422"
+                },
+                "example": {
+                  "errors": {
+                    "name": [
+                      "The name field must be at least 11 characters."
+                    ],
+                    "category": [
+                      "Category must be one of (hotel, alternative, hostel, lodge, resort, guest-house)."
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Accommodations"
+        ],
+        "summary": "Delete an accommodation for authenticated user",
+        "description": "Delete an accommodation for the authenticated user.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the accommodation to delete",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Accommodation deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/accommodations/{accommodationId}/bookings": {
+      "post": {
+        "tags": [
+          "Accommodations"
+        ],
+        "summary": "Book an accommodation",
+        "description": "Book an accommodation.",
+        "parameters": [
+          {
+            "name": "accommodationId",
+            "in": "path",
+            "description": "ID of the accommodation to book",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "Accommodation booked successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_4"
+                },
+                "example": {
+                  "message": "Accommodation booked successfully"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Accommodation fully booked and not available at the current time"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "inline_response_200_2_location": {
+        "type": "object",
+        "properties": {
+          "country": {
+            "type": "string",
+            "example": "Germany"
+          },
+          "city": {
+            "type": "string",
+            "example": "Berlin"
+          },
+          "state": {
+            "type": "string",
+            "example": "Morelos"
+          },
+          "zip_code": {
+            "type": "integer",
+            "example": 12345
+          },
+          "address": {
+            "type": "string",
+            "example": "Boulevard Díaz Ordaz No. 9 Cantarranas"
+          }
+        }
+      },
+      "inline_response_200_3_data": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer"
+          },
+          "category": {
+            "type": "string"
+          },
+          "location": {
+            "$ref": "#/components/schemas/v1accommodations_location"
+          },
+          "image": {
+            "type": "string"
+          },
+          "reputation": {
+            "type": "integer"
+          },
+          "reputationBadge": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "availability": {
+            "type": "integer"
+          }
+        },
+        "example": "[{\"id\":\"9a3d321d-ef18-4a52-a7b5-96ec21485481\",\"name\":\"nile luzor 2\",\"rating\":5,\"category\":\"guest-house\",\"location\":{\"country\":\"Germany\",\"city\":\"Berlin\",\"state\":\"Morelos\",\"zip_code\":12345,\"address\":\"Boulevard Díaz Ordaz No. 9 Cantarranas\"},\"image\":\"http://dsfdsf/dfds.jpg\",\"reputation\":630,\"reputationBadge\":\"YELLOW\",\"price\":323,\"availability\":2},{\"id\":\"9a3d323c-8b47-4edf-a31b-c3c11de74588\",\"name\":\"Horaga mlia ff\",\"rating\":2,\"category\":\"guest-house\",\"location\":{\"country\":\"Germany\",\"city\":\"Berlin\",\"state\":\"Morelos\",\"zip_code\":12345,\"address\":\"Boulevard Díaz Ordaz No. 9 Cantarranas\"},\"image\":\"http://dsfdsf/dfds.jpg\",\"reputation\":630,\"reputationBadge\":\"YELLOW\",\"price\":323,\"availability\":2}]"
+      },
+      "inline_response_200_1_data": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "9a3bbbd8-860a-4f5b-b2d5-3a5c309bf050"
+          },
+          "name": {
+            "type": "string",
+            "example": "Mustafa Jalal"
+          },
+          "email": {
+            "type": "string",
+            "example": "mustafa.jalal2@gmail.com"
+          }
+        }
+      },
+      "auth_register_body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "v1_accommodations_body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer"
+          },
+          "category": {
+            "type": "string"
+          },
+          "reputation": {
+            "type": "integer"
+          },
+          "availability": {
+            "type": "integer"
+          },
+          "image": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "location": {
+            "$ref": "#/components/schemas/v1accommodations_location"
+          }
+        },
+        "example": {
+          "name": "a hotel name",
+          "rating": 2,
+          "category": "guest-house",
+          "reputation": 500,
+          "availability": 10,
+          "image": "http://a-valid-path-to-image/image.jpg",
+          "price": 323,
+          "location": {
+            "country": "Germany",
+            "city": "Berlin",
+            "state": "new state",
+            "zip_code": 12345,
+            "address": "Boulevard Díaz Ordaz No. 9 Bavaria"
+          }
+        }
+      },
+      "v1accommodations_location": {
+        "type": "object",
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "zip_code": {
+            "type": "integer"
+          },
+          "address": {
+            "type": "string"
+          }
+        }
+      },
+      "inline_response_200_1": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_1_data"
+            }
+          }
+        }
+      },
+      "inline_response_201": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/inline_response_201_data"
+          }
+        }
+      },
+      "auth_login_body": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          }
+        }
+      },
+      "inline_response_200_2": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_2_data"
+            }
+          }
+        }
+      },
+      "inline_response_201_data": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer"
+          },
+          "category": {
+            "type": "string"
+          },
+          "location": {
+            "$ref": "#/components/schemas/v1accommodations_location"
+          },
+          "image": {
+            "type": "string"
+          },
+          "reputation": {
+            "type": "integer"
+          },
+          "reputationBadge": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "availability": {
+            "type": "integer"
+          }
+        }
+      },
+      "inline_response_200_3": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_3_data"
+            }
+          }
+        }
+      },
+      "inline_response_200_4": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
+      "inline_response_200_2_data": {
+        "required": [
+          "availability",
+          "category",
+          "id",
+          "image",
+          "location",
+          "name",
+          "price",
+          "rating",
+          "reputation",
+          "reputationBadge"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "9a3bbc0a-ed7e-4e14-af02-231fc0eeecbe"
+          },
+          "name": {
+            "type": "string",
+            "example": "Hol gona mustafa"
+          },
+          "rating": {
+            "type": "integer",
+            "example": 5
+          },
+          "category": {
+            "type": "string",
+            "example": "guest-house"
+          },
+          "location": {
+            "$ref": "#/components/schemas/inline_response_200_2_location"
+          },
+          "image": {
+            "type": "string",
+            "format": "uri",
+            "example": "http://dsfdsf/dfds.jpj"
+          },
+          "reputation": {
+            "type": "integer",
+            "example": 630
+          },
+          "reputationBadge": {
+            "type": "string",
+            "example": "YELLOW"
+          },
+          "price": {
+            "type": "number",
+            "example": 323
+          },
+          "availability": {
+            "type": "integer",
+            "example": 0
+          }
+        }
+      },
+      "accommodations_id_body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer"
+          },
+          "category": {
+            "type": "string"
+          },
+          "reputation": {
+            "type": "integer"
+          },
+          "availability": {
+            "type": "integer"
+          },
+          "image": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "location": {
+            "$ref": "#/components/schemas/v1accommodations_location"
+          }
+        },
+        "example": {
+          "name": "a new hotel name",
+          "rating": 2,
+          "category": "hotel",
+          "reputation": 300,
+          "availability": 8,
+          "image": "http://a-valid-path-to-image/image.jpg",
+          "price": 323,
+          "location": {
+            "country": "Germany",
+            "city": "Berlin",
+            "state": "new state",
+            "zip_code": 12345,
+            "address": "Boulevard Díaz Ordaz No. 9 Bavaria"
+          }
+        }
+      },
+      "inline_response_422": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
