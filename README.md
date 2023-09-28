@@ -103,9 +103,7 @@ Database Used Is Mysql.
     ```
 ## API Documentation:
 
-there is a detailed docs with swagger (OpenApi 3.0) but here is a summary.
-
-## Routes:
+there is a detailed docs with swagger (OpenApi 3.0) but here is a summary:
 
 - Private Route:
 
@@ -118,7 +116,7 @@ there is a detailed docs with swagger (OpenApi 3.0) but here is a summary.
    * `POST /api/accommodations/:id/bookings`: Make Reservation.
   * `POST /auth/register`: Creates a new user. name, email and password is required in request body.
   * `POST /auth/login`: login user. email and password is required in request body and return access_token.
-  * `GET /v1/accommodations?city=berlin`: get accommodations.
+  * `GET /v1/accommodations?city=berlin`: get all accommodations.
   * `GET /v1/users`: get all users data
   * `GET /v1/users/:id/accommodations?rating=5`: get accommodations for given user.
 
