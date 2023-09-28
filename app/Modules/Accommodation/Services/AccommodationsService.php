@@ -12,6 +12,7 @@ use App\Modules\User\Services\GetAuthUserService;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
@@ -97,6 +98,8 @@ class AccommodationsService
                 throw new NotFoundResourceException("Accommodation not found", ResponseAlias::HTTP_NOT_FOUND);
             }
 
+            Gate::authorize('update', $accommodation);
+
             DB::beginTransaction();
 
             $this->locationRepository->update($accommodation->location->id, $dto->getLocation());
@@ -124,6 +127,8 @@ class AccommodationsService
             if (!$accommodation) {
                 throw new NotFoundResourceException("Accommodation not found", ResponseAlias::HTTP_NOT_FOUND);
             }
+
+            Gate::authorize('delete', $accommodation);
 
             DB::beginTransaction();
 

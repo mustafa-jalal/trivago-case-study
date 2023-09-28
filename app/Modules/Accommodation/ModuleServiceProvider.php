@@ -2,6 +2,8 @@
 
 namespace App\Modules\Accommodation;
 
+use App\Modules\Accommodation\Models\Accommodation;
+use App\Modules\Accommodation\Policies\AccommodationPolicy;
 use App\Modules\Accommodation\Repositories\AccommodationRepository;
 use App\Modules\Accommodation\Repositories\AccommodationRepositoryInterface;;
 
@@ -11,6 +13,15 @@ use Illuminate\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
 {
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array
+     */
+    protected array $policies = [
+        Accommodation::class => AccommodationPolicy::class,
+    ];
+
     /**
      * Register any application services.
      */
